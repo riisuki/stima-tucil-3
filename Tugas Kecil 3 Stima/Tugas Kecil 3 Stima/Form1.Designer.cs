@@ -35,11 +35,11 @@ namespace Tugas_Kecil_3_Stima
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eNToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.guideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fromText = new System.Windows.Forms.Label();
@@ -97,6 +97,13 @@ namespace Tugas_Kecil_3_Stima
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
             // languageToolStripMenuItem
             // 
             this.languageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -105,6 +112,22 @@ namespace Tugas_Kecil_3_Stima
             this.languageToolStripMenuItem.Name = "languageToolStripMenuItem";
             this.languageToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
             this.languageToolStripMenuItem.Text = "Language";
+            // 
+            // eNToolStripMenuItem
+            // 
+            this.eNToolStripMenuItem.Checked = true;
+            this.eNToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.eNToolStripMenuItem.Name = "eNToolStripMenuItem";
+            this.eNToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.eNToolStripMenuItem.Text = "English";
+            this.eNToolStripMenuItem.Click += new System.EventHandler(this.eNToolStripMenuItem_Click);
+            // 
+            // iDToolStripMenuItem
+            // 
+            this.iDToolStripMenuItem.Name = "iDToolStripMenuItem";
+            this.iDToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.iDToolStripMenuItem.Text = "Bahasa Indonesia";
+            this.iDToolStripMenuItem.Click += new System.EventHandler(this.iDToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -115,39 +138,16 @@ namespace Tugas_Kecil_3_Stima
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
-            // eNToolStripMenuItem
-            // 
-            this.eNToolStripMenuItem.Checked = true;
-            this.eNToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.eNToolStripMenuItem.Name = "eNToolStripMenuItem";
-            this.eNToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.eNToolStripMenuItem.Text = "English";
-            this.eNToolStripMenuItem.Click += new System.EventHandler(this.eNToolStripMenuItem_Click);
-            // 
-            // iDToolStripMenuItem
-            // 
-            this.iDToolStripMenuItem.Name = "iDToolStripMenuItem";
-            this.iDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.iDToolStripMenuItem.Text = "Bahasa Indonesia";
-            this.iDToolStripMenuItem.Click += new System.EventHandler(this.iDToolStripMenuItem_Click);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
             // guideToolStripMenuItem
             // 
             this.guideToolStripMenuItem.Name = "guideToolStripMenuItem";
-            this.guideToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.guideToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.guideToolStripMenuItem.Text = "Guide";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // fromText
@@ -161,6 +161,7 @@ namespace Tugas_Kecil_3_Stima
             // 
             // comboBox1
             // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(51, 414);
             this.comboBox1.Name = "comboBox1";
@@ -178,6 +179,7 @@ namespace Tugas_Kecil_3_Stima
             // 
             // comboBox2
             // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(219, 414);
             this.comboBox2.Name = "comboBox2";

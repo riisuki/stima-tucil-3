@@ -1,0 +1,7 @@
+3
+10 0 20
+30 4 0
+0 0 6
+Simpul A
+Simpul B
+Simpul C
