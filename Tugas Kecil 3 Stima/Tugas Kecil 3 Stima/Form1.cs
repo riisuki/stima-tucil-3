@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace Tugas_Kecil_3_Stima
 {
     public partial class mainForm : Form
@@ -30,6 +31,9 @@ namespace Tugas_Kecil_3_Stima
             browseButton.Text = "Browse";
             fromText.Text = "From:";
             toText.Text = "To:";
+            shortestText.Text = "Shortest Path:";
+            distanceText.Text = "Distance:";
+            searchButton.Text = "Search";
         }
 
         private void iDToolStripMenuItem_Click(object sender, EventArgs e)
@@ -45,6 +49,9 @@ namespace Tugas_Kecil_3_Stima
             browseButton.Text = "Telusuri";
             fromText.Text = "Dari:";
             toText.Text = "Ke:";
+            shortestText.Text = "Jalur Terpendek:";
+            distanceText.Text = "Jarak:";
+            searchButton.Text = "Cari";
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -52,13 +59,53 @@ namespace Tugas_Kecil_3_Stima
             Environment.Exit(0);
         }
 
+        bool[,] createMatriksJalan(string[] isifile2)
+        {
+            int jumlahNode = Int32.Parse(isifile2[0]);
+            bool[,] matriks = new bool[jumlahNode, jumlahNode];
+
+            for (int i = 0; i < jumlahNode; i++)
+            {
+                string[] tempstring = isifile2[i+1].Split(' ');
+                for(int j = 0; j<jumlahNode; j++)
+                {
+                    if(tempstring[j] == "0")
+                    {
+                        matriks[i, j] = false;
+                    }
+                    else
+                    {
+                        matriks[i, j] = true;
+                    }
+                }
+            }
+            return matriks;
+        }
+
+        float[,] createMatriksBobot(string[] isifile2)
+        {
+            int jumlahNode = Int32.Parse(isifile2[0]);
+            float[,] matriks = new float[jumlahNode, jumlahNode];
+
+            for (int i = 0; i < jumlahNode; i++)
+            {
+                string[] tempstring = isifile2[i+1+jumlahNode].Split(' ');
+                for (int j = 0; j < jumlahNode; j++)
+                {
+                    matriks[i, j] = float.Parse(tempstring[j], System.Globalization.CultureInfo.InvariantCulture);
+                }
+            }
+            return matriks;
+        }
+
         private void browseButton_Click(object sender, EventArgs e)
         {
             // Terima input file, ubah jadi graf
             // Format file .txt:
             // Baris 1              : jumlah simpul (n)
-            // Baris 2 sampai n+1   : matriks ketetanggan berbobot
-            // Baris n+2 sampai 2n+1: nama simpul jika diberi nama
+            // Baris 2 sampai n+1   : matriks ketetanggan, 1 berarti ada jalan antara i dan j
+            // Baris n+2 sampai 2n+1: matriks jarak, berisi semua jarak dari i ke j
+            // Baris 2n+2 sampai 3n+1: nama simpul jika diberi nama
             // Jika tidak diberi nama, gunakan angka 1, 2, 3, ..., n
 
             OpenFileDialog dialog = new OpenFileDialog();
@@ -75,10 +122,27 @@ namespace Tugas_Kecil_3_Stima
 
                 // Baca isi file
                 string isifile = System.IO.File.ReadAllText(textBox1.Text);
+                string[] isifile2 = isifile.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
-                /*
                 // Buat daftar huruf/nama akun
-                List<string> daftarHuruf = new List<string>(createDaftarHuruf());
+                List<string> daftarHuruf = new List<string>();
+                int jumlahNode = Int32.Parse(isifile2[0]);
+                if(isifile2.Length == jumlahNode*2+1)
+                {
+                    // Tidak pakai nama
+                    for(int i = 0; i<jumlahNode; i++)
+                    {
+                        daftarHuruf.Add((i+1).ToString());
+                    }
+                }
+                else
+                {
+                    // Pakai nama
+                    for(int i = 0; i<jumlahNode; i++)
+                    {
+                        daftarHuruf.Add(isifile2[jumlahNode*2+1+i]);
+                    }
+                }
 
                 // Ubah dropdown list
                 foreach (var huruf in daftarHuruf)
@@ -87,22 +151,106 @@ namespace Tugas_Kecil_3_Stima
                     comboBox2.Items.Add(huruf);
                 }
 
+                // Ubah panjang combobox dropdown jika kurang
+                int maxlength = 0;
+                for(int i=0; i<jumlahNode; i++)
+                {
+                    if(comboBox1.Items[i].ToString().Length > maxlength)
+                    {
+                        maxlength = comboBox1.Items[i].ToString().Length;
+                    }
+                }
+
+
                 comboBox1.SelectedIndex = 0;
                 comboBox2.SelectedIndex = 0;
-                */
 
                 // Buat graf
+                bool[,] matriksJalan = new bool[jumlahNode, jumlahNode];
+                matriksJalan = createMatriksJalan(isifile2);
+                float[,] matriksBobot = new float[jumlahNode, jumlahNode];
+                matriksBobot = createMatriksBobot(isifile2);
+
                 Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
-                graph.AddEdge("A", "B");
-                graph.AddEdge("B", "C");
-                graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-                graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
-                graph.FindNode("B").Attr.FillColor = Microsoft.Msagl.Drawing.Color.MistyRose;
-                Microsoft.Msagl.Drawing.Node c = graph.FindNode("C");
-                c.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
-                c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
+
+                // Tambah edge dan node graf
+                for(int i = 0; i<jumlahNode; i++)
+                {
+                    for(int j = i; j<jumlahNode; j++)
+                    {
+                        if(matriksJalan[i,j]==true)
+                        {
+                            var edge = graph.AddEdge(comboBox1.Items[i].ToString(), comboBox1.Items[j].ToString());
+                            edge.Attr.ArrowheadAtTarget = Microsoft.Msagl.Drawing.ArrowStyle.None;
+                            edge.LabelText = matriksBobot[i, j].ToString();
+                        }
+                    }
+                }  
                 gViewer1.Graph = graph;
             }
+        }
+
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            int dari = comboBox1.SelectedIndex;
+            int ke = comboBox2.SelectedIndex;
+            if (dari == ke)
+            {
+                // Gagal mencari
+                MessageBox.Show("Harap pilih 2 simpul yang berbeda.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                // Lakukan pencarian
+                findPath(dari, ke);
+            }
+        }
+
+        void findPath(int dari, int ke)
+        {
+
+            string isifile = System.IO.File.ReadAllText(textBox1.Text);
+            string[] isifile2 = isifile.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            int jumlahNode = Int32.Parse(isifile2[0]);
+            bool[,] matriksJalan = new bool[jumlahNode, jumlahNode];
+            matriksJalan = createMatriksJalan(isifile2);
+            float[,] matriksBobot = new float[jumlahNode, jumlahNode];
+            matriksBobot = createMatriksBobot(isifile2);
+
+            // Cari jalur terpendek dengan A*
+            // ...
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string msg;
+            if (eNToolStripMenuItem.Checked == true)
+            {
+                msg = "Tugas Kecil 3 Strategi Algoritma:\nShortest Path with A*\n\n13519063 Melita\n13519171 Fauzan Yubairi Indrayadi";
+                MessageBox.Show(msg, "About", MessageBoxButtons.OK);
+            }
+            else
+            {
+                msg = "Tugas Kecil 3 Strategi Algoritma:\nLintasan Terpendek dengan A*\n\n13519063 Melita\n13519171 Fauzan Yubairi Indrayadi";
+                MessageBox.Show(msg, "Tentang", MessageBoxButtons.OK);
+            }
+        }
+
+        private void guideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string msg;
+            if(eNToolStripMenuItem.Checked==true)
+            {
+                msg = "1. Choose input file with 'Browse'\n2. Pick a starting node and a goal node\n3. Click 'Search'";
+                MessageBox.Show(msg, "Guide", MessageBoxButtons.OK);
+            }
+            else
+            {
+                msg = "1. Pilih berkas input dengan 'Telusuri'\n2. Pilih simpul awal dan simpul tujuan\n3. Tekan tombol 'Cari'";
+                MessageBox.Show(msg, "Panduan", MessageBoxButtons.OK);
+            }
+            
+            
         }
     }
 }

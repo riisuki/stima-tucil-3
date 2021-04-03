@@ -47,6 +47,11 @@ namespace Tugas_Kecil_3_Stima
             this.toText = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.gViewer1 = new Microsoft.Msagl.GraphViewerGdi.GViewer();
+            this.shortestText = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.distanceText = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.searchButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -118,14 +123,14 @@ namespace Tugas_Kecil_3_Stima
             this.eNToolStripMenuItem.Checked = true;
             this.eNToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.eNToolStripMenuItem.Name = "eNToolStripMenuItem";
-            this.eNToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.eNToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.eNToolStripMenuItem.Text = "English";
             this.eNToolStripMenuItem.Click += new System.EventHandler(this.eNToolStripMenuItem_Click);
             // 
             // iDToolStripMenuItem
             // 
             this.iDToolStripMenuItem.Name = "iDToolStripMenuItem";
-            this.iDToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.iDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.iDToolStripMenuItem.Text = "Bahasa Indonesia";
             this.iDToolStripMenuItem.Click += new System.EventHandler(this.iDToolStripMenuItem_Click);
             // 
@@ -141,14 +146,16 @@ namespace Tugas_Kecil_3_Stima
             // guideToolStripMenuItem
             // 
             this.guideToolStripMenuItem.Name = "guideToolStripMenuItem";
-            this.guideToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.guideToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.guideToolStripMenuItem.Text = "Guide";
+            this.guideToolStripMenuItem.Click += new System.EventHandler(this.guideToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // fromText
             // 
@@ -165,13 +172,13 @@ namespace Tugas_Kecil_3_Stima
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(51, 414);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.Size = new System.Drawing.Size(293, 21);
             this.comboBox1.TabIndex = 6;
             // 
             // toText
             // 
             this.toText.AutoSize = true;
-            this.toText.Location = new System.Drawing.Point(190, 417);
+            this.toText.Location = new System.Drawing.Point(12, 450);
             this.toText.Name = "toText";
             this.toText.Size = new System.Drawing.Size(23, 13);
             this.toText.TabIndex = 7;
@@ -181,9 +188,9 @@ namespace Tugas_Kecil_3_Stima
             // 
             this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(219, 414);
+            this.comboBox2.Location = new System.Drawing.Point(51, 446);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
+            this.comboBox2.Size = new System.Drawing.Size(293, 21);
             this.comboBox2.TabIndex = 8;
             // 
             // gViewer1
@@ -225,11 +232,61 @@ namespace Tugas_Kecil_3_Stima
             this.gViewer1.ZoomF = 1D;
             this.gViewer1.ZoomWindowThreshold = 0.05D;
             // 
+            // shortestText
+            // 
+            this.shortestText.Location = new System.Drawing.Point(350, 417);
+            this.shortestText.Name = "shortestText";
+            this.shortestText.Size = new System.Drawing.Size(100, 16);
+            this.shortestText.TabIndex = 10;
+            this.shortestText.Text = "Shortest Path:";
+            this.shortestText.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(456, 414);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
+            this.textBox2.Size = new System.Drawing.Size(316, 20);
+            this.textBox2.TabIndex = 11;
+            // 
+            // distanceText
+            // 
+            this.distanceText.Location = new System.Drawing.Point(386, 450);
+            this.distanceText.Name = "distanceText";
+            this.distanceText.Size = new System.Drawing.Size(64, 13);
+            this.distanceText.TabIndex = 12;
+            this.distanceText.Text = "Distance:";
+            this.distanceText.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(456, 447);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.ReadOnly = true;
+            this.textBox3.Size = new System.Drawing.Size(316, 20);
+            this.textBox3.TabIndex = 13;
+            // 
+            // searchButton
+            // 
+            this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchButton.Location = new System.Drawing.Point(16, 486);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(756, 23);
+            this.searchButton.TabIndex = 14;
+            this.searchButton.Text = "Search";
+            this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 450);
+            this.ClientSize = new System.Drawing.Size(784, 525);
+            this.Controls.Add(this.searchButton);
+            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.distanceText);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.shortestText);
             this.Controls.Add(this.gViewer1);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.toText);
@@ -270,6 +327,11 @@ namespace Tugas_Kecil_3_Stima
         private System.Windows.Forms.Label toText;
         private System.Windows.Forms.ComboBox comboBox2;
         private Microsoft.Msagl.GraphViewerGdi.GViewer gViewer1;
+        private System.Windows.Forms.Label shortestText;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label distanceText;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Button searchButton;
     }
 }
 
