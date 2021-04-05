@@ -40,6 +40,11 @@
       tidak ada, textbox akan menuliskan bahwa tidak ada jalur antara
       kedua simpul.
 
+>> Fitur Lain
+   >> Pengaturan Bahasa
+      Bahasa dapat dipilih antara Bahasa Indonesia atau Inggris menggunakan
+      menu Language.
+
 >> Author
    13519063 Melita
    13519171 Fauzan Yubairi Indrayadi
