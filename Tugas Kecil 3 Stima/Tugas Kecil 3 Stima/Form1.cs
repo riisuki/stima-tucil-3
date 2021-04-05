@@ -201,7 +201,8 @@ namespace Tugas_Kecil_3_Stima
                         {
                             var edge = graph.AddEdge(comboBox1.Items[i].ToString(), comboBox1.Items[j].ToString());
                             edge.Attr.ArrowheadAtTarget = Microsoft.Msagl.Drawing.ArrowStyle.None;
-                            edge.LabelText = matriksBobot[i, j].ToString();
+                            string elabel = matriksBobot[i, j].ToString() + " m";
+                            edge.LabelText = elabel;
                         }
                     }
                 }  
