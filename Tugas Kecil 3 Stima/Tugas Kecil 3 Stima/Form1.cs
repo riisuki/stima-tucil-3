@@ -86,16 +86,44 @@ namespace Tugas_Kecil_3_Stima
         {
             int jumlahNode = Int32.Parse(isifile2[0]);
             float[,] matriks = new float[jumlahNode, jumlahNode];
+            for(int i = 0; i<jumlahNode; i++)
+            {
+                for(int j = 0;j<jumlahNode;j++)
+                {
+                    matriks[i, j] = 0;
+                }
+            }
 
             for (int i = 0; i < jumlahNode; i++)
             {
-                string[] tempstring = isifile2[i+1+jumlahNode].Split(' ');
-                for (int j = 0; j < jumlahNode; j++)
+                string[] pos1 = isifile2[i+1+jumlahNode].Split(' ');
+                for (int j = i; j < jumlahNode; j++)
                 {
-                    matriks[i, j] = float.Parse(tempstring[j], System.Globalization.CultureInfo.InvariantCulture);
+                    string[] pos2 = isifile2[j + 1 + jumlahNode].Split(' ');
+                    if (i!=j)
+                    {
+                        float lat1 = float.Parse(pos1[0], System.Globalization.CultureInfo.InvariantCulture);
+                        float lon1 = float.Parse(pos1[1], System.Globalization.CultureInfo.InvariantCulture);
+                        float lat2 = float.Parse(pos2[0], System.Globalization.CultureInfo.InvariantCulture);
+                        float lon2 = float.Parse(pos2[1], System.Globalization.CultureInfo.InvariantCulture);
+
+                        matriks[i, j] = haversine(lat1, lon1, lat2, lon2);
+                        matriks[j, i] = matriks[i, j];
+                    }
                 }
             }
             return matriks;
+        }
+
+        float haversine(float lat1, float lon1, float lat2, float lon2)
+        {
+            var R = 6371;
+            var dLat = (lat2 - lat1) * (Math.PI/180);
+            var dLon = (lon2 - lon1) * (Math.PI/180);
+            var a = Math.Sin(dLat/2) * Math.Sin(dLat/2) + Math.Cos(lat1 * (Math.PI/180)) * Math.Cos(lat2 * (Math.PI/180)) * Math.Sin(dLon/2) * Math.Sin(dLon/2);
+            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            var result = R * c * 1000;
+            return (float) result;
         }
 
         private void browseButton_Click(object sender, EventArgs e)
