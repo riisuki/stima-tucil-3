@@ -218,7 +218,58 @@ namespace Tugas_Kecil_3_Stima
             matriksBobot = createMatriksBobot(isifile2);
 
             // Cari jalur terpendek dengan A*
-            // ...
+            List<int> path = new List<int>();
+            List<int> open = new List<int>();
+            List<int> closed = new List<int>();
+            float[] f = new float[jumlahNode];
+            float[] g = new float[jumlahNode];
+            int[] prev = new int[jumlahNode];
+            float cekf, cekg, h;
+            
+            for (int i = 0; i < jumlahNode; i++)
+            {
+                f[i] = 999999;
+                g[i] = 0;
+                prev[i] = -1;
+            }
+            
+            open.Add(dari);
+            while (open.Count() > 0)
+            {
+                open.Sort(); //ngurut dari f(n) terkecil
+                int curr = open[0];
+                open.RemoveAt(0);
+                closed.Add(curr);
+
+                if (curr == ke)
+                {
+                    while (curr != dari)
+                    {
+                        path.Add(curr);
+                        curr = prev[curr];
+                    }
+                    path.Add(curr);
+                    path.Reverse();
+                    return;
+                }
+
+                for (int i = 0; i < jumlahNode; i++)
+                {
+                    if (matriksJalan[curr, i] && !closed.Contains(i))
+                    {
+                        cekg = g[curr] + matriksBobot[curr, i];
+                        h = matriksBobot[i, ke];
+                        cekf = cekg + h;
+                        if (cekf < f[i])
+                        {
+                            f[i] = cekf;
+                            g[i] = cekg;
+                            prev[i] = curr;
+                            open.Add(i);
+                        }
+                    }
+                }
+            }
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
