@@ -181,17 +181,6 @@ namespace Tugas_Kecil_3_Stima
                     comboBox2.Items.Add(huruf);
                 }
 
-                // Ubah panjang combobox dropdown jika kurang
-                int maxlength = 0;
-                for(int i=0; i<jumlahNode; i++)
-                {
-                    if(comboBox1.Items[i].ToString().Length > maxlength)
-                    {
-                        maxlength = comboBox1.Items[i].ToString().Length;
-                    }
-                }
-
-
                 comboBox1.SelectedIndex = 0;
                 comboBox2.SelectedIndex = 0;
 
@@ -252,6 +241,14 @@ namespace Tugas_Kecil_3_Stima
 
         void findPath(int dari, int ke)
         {
+            // Reset edge graf
+            foreach (var edge in gViewer1.Graph.Edges)
+            {
+                edge.Attr.Color = Microsoft.Msagl.Drawing.Color.Black;
+                edge.Attr.LineWidth = 1.0;
+            }
+
+            gViewer1.Refresh();
 
             string isifile = System.IO.File.ReadAllText(textBox1.Text);
             string[] isifile2 = isifile.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
@@ -330,6 +327,22 @@ namespace Tugas_Kecil_3_Stima
                 textBox2.AppendText((finalRoute[finalRoute.Count-1] + 1).ToString());
                 textBox3.Text = (allPathF[allPathF.Count-1]).ToString();
                 textBox3.AppendText(" m");
+
+                // Highlight edge jalan pada graf
+                foreach (var edge in gViewer1.Graph.Edges)
+                {
+                    for(int i = 0;i<finalRoute.Count-1;i++)
+                    {
+                        if(edge.SourceNode.Id==comboBox1.Items[finalRoute[i]] && edge.TargetNode.Id==comboBox1.Items[finalRoute[i+1]] ||
+                            edge.SourceNode.Id == comboBox1.Items[finalRoute[i+1]] && edge.TargetNode.Id == comboBox1.Items[finalRoute[i]])
+                        {
+                            edge.Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+                            edge.Attr.LineWidth = 2.0;
+                        }
+                    }
+                }
+
+                gViewer1.Refresh();
             }
             else
             {
