@@ -141,6 +141,8 @@ namespace Tugas_Kecil_3_Stima
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
+                textBox2.Text = "";
+                textBox3.Text = "";
                 // Clear combobox
                 comboBox1.Items.Clear();
                 comboBox2.Items.Clear();
@@ -234,6 +236,20 @@ namespace Tugas_Kecil_3_Stima
             }
         }
 
+        float getF(List<int> route, int goal, float[,] matriksBobot)
+        {
+            float g = 0;
+            for(int i=0; i<route.Count-1; i++)
+            {
+                g += matriksBobot[route[i], route[i + 1]];
+            }
+
+            float h = matriksBobot[route[route.Count - 1], goal];
+
+            return g + h;
+        }
+
+
         void findPath(int dari, int ke)
         {
 
@@ -246,57 +262,80 @@ namespace Tugas_Kecil_3_Stima
             matriksBobot = createMatriksBobot(isifile2);
 
             // Cari jalur terpendek dengan A*
-            List<int> path = new List<int>();
-            List<int> open = new List<int>();
-            List<int> closed = new List<int>();
-            float[] f = new float[jumlahNode];
-            float[] g = new float[jumlahNode];
-            int[] prev = new int[jumlahNode];
-            float cekf, cekg, h;
-            
-            for (int i = 0; i < jumlahNode; i++)
+            List<List<int>> allPath = new List<List<int>>();
+            List<int> first = new List<int>();
+            List<float> allPathF = new List<float>();
+            first.Add(dari);
+            allPath.Add(first);
+            allPathF.Add(getF(first, ke, matriksBobot));
+            bool found = false;
+            while(!found && allPath.Count>0)
             {
-                f[i] = 999999;
-                g[i] = 0;
-                prev[i] = -1;
-            }
-            
-            open.Add(dari);
-            while (open.Count() > 0)
-            {
-                open.Sort(); //ngurut dari f(n) terkecil
-                int curr = open[0];
-                open.RemoveAt(0);
-                closed.Add(curr);
-
-                if (curr == ke)
+                // Cek rute dengan f minimum 
+                int minidx = 0;
+                for(int i=1;i<allPathF.Count;i++)
                 {
-                    while (curr != dari)
+                    if (allPathF[minidx] > allPathF[i])
                     {
-                        path.Add(curr);
-                        curr = prev[curr];
+                        minidx = i;
                     }
-                    path.Add(curr);
-                    path.Reverse();
-                    return;
                 }
-
-                for (int i = 0; i < jumlahNode; i++)
+                List<int> checkRoute = new List<int>(allPath[minidx]);
+                allPath.RemoveAt(minidx);
+                allPathF.RemoveAt(minidx);
+                Console.Write("Minimum found is ");
+                for(int k=0;k<checkRoute.Count;k++)
                 {
-                    if (matriksJalan[curr, i] && !closed.Contains(i))
+                    Console.Write(checkRoute[k]+1);
+                }
+                Console.WriteLine();
+
+                if (checkRoute[checkRoute.Count-1]==ke)
+                {
+                    found = true;
+                    allPath.Add(checkRoute);
+                    allPathF.Add(getF(checkRoute, ke, matriksBobot));
+                }
+                else
+                {
+                    for (int i = 0; i < jumlahNode; i++)
                     {
-                        cekg = g[curr] + matriksBobot[curr, i];
-                        h = matriksBobot[i, ke];
-                        cekf = cekg + h;
-                        if (cekf < f[i])
+                        if (!checkRoute.Contains(i) && matriksJalan[i, checkRoute[checkRoute.Count-1]])
                         {
-                            f[i] = cekf;
-                            g[i] = cekg;
-                            prev[i] = curr;
-                            open.Add(i);
+                            // Jika i belum dikunjungi di rute sekarang
+                            List<int> addedRoute = new List<int>(checkRoute);
+                            addedRoute.Add(i);
+                            allPath.Add(addedRoute);
+                            allPathF.Add(getF(addedRoute, ke, matriksBobot));
+                            Console.Write("Added route ");
+                            Console.WriteLine(i + 1);
+                            Console.Write("with f = ");
+                            Console.WriteLine(allPathF[allPathF.Count - 1]);
                         }
                     }
+                }    
+                
+            }
+            if(allPath.Count>0)
+            {
+                // Jika ketemu jalan
+                List<int> finalRoute = new List<int>(allPath[allPath.Count - 1]);
+                textBox2.Text = "";
+                for (int i = 0; i < finalRoute.Count - 1; i++)
+                {
+                    textBox2.AppendText((finalRoute[i] + 1).ToString());
+                    textBox2.AppendText(" → ");
                 }
+
+                textBox2.AppendText((finalRoute[finalRoute.Count-1] + 1).ToString());
+                textBox3.Text = (allPathF[allPathF.Count-1]).ToString();
+                textBox3.AppendText(" m");
+            }
+            else
+            {
+                // Jika tidak ketemu jalan
+                textBox2.Text = "Tidak ada jalan yang ditemukan";
+                textBox3.Text = "N/A";
             }
         }
 
